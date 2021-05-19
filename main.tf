@@ -63,7 +63,7 @@ resource "azurerm_app_service" "spacegame_dev" {
   }
 }
 
-output "appservice_name" {
+output "appservice_name_dev" {
   value       = azurerm_app_service.spacegame_dev.name
   description = "The App Service name for the dev environment"
 }
