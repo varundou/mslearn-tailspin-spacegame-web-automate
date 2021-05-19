@@ -22,7 +22,7 @@
         "firstRun": {
             "reference": {
                 "keyVault": {
-                    "id": ""
+                    "id": "/subscriptions/c4774376-bc4c-48e6-93eb-c0ac26c6345d/resourceGroups/varun-senthilkumar/providers/Microsoft.KeyVault/vaults/tailspin-vault-9900"
                 },
                 "secretName": "firstRun"
             }
