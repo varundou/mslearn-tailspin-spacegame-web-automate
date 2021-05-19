@@ -1,7 +1,11 @@
 terraform {
   required_version = "> 0.12.0"
-
+  
   backend "azurerm" {
+    resource_group_name  = "cloud-shell-storage-westus"
+    storage_account_name = "tfsa2222"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
   }
 }
 
@@ -11,7 +15,7 @@ provider "azurerm" {
 }
 
 variable "resource_group_name" {
-  default = "tailspin-space-game-rg"
+  default = "varun-senthilkumar"
   description = "The name of the resource group"
 }
 
@@ -34,15 +38,10 @@ resource "random_integer" "app_service_name_suffix" {
   max = 9999
 }
 
-resource "azurerm_resource_group" "spacegame" {
-  name     = var.resource_group_name
-  location = var.resource_group_location
-}
-
 resource "azurerm_app_service_plan" "spacegame" {
   name                = var.app_service_plan_name
-  location            = azurerm_resource_group.spacegame.location
-  resource_group_name = azurerm_resource_group.spacegame.name
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
   kind                = "Linux"
   reserved            = true
 
@@ -54,8 +53,8 @@ resource "azurerm_app_service_plan" "spacegame" {
 
 resource "azurerm_app_service" "spacegame_dev" {
   name                = "${var.app_service_name_prefix}-dev-${random_integer.app_service_name_suffix.result}"
-  location            = azurerm_resource_group.spacegame.location
-  resource_group_name = azurerm_resource_group.spacegame.name
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
   app_service_plan_id = azurerm_app_service_plan.spacegame.id
 
   site_config {
@@ -64,7 +63,7 @@ resource "azurerm_app_service" "spacegame_dev" {
   }
 }
 
-output "appservice_name_dev" {
+output "appservice_name" {
   value       = azurerm_app_service.spacegame_dev.name
   description = "The App Service name for the dev environment"
 }
